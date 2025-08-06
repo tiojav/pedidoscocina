@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/pedidoscocina/static/css/main.cbf81f01.css",
+    "main.js": "/pedidoscocina/static/js/main.ecbda714.js",
+    "index.html": "/pedidoscocina/index.html",
+    "main.cbf81f01.css.map": "/pedidoscocina/static/css/main.cbf81f01.css.map",
+    "main.ecbda714.js.map": "/pedidoscocina/static/js/main.ecbda714.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.cbf81f01.css",
+    "static/js/main.ecbda714.js"
+  ]
+}
