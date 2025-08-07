@@ -2,7 +2,7 @@
   "name": "pedidos-cocina",
   "version": "1.0.0",
   "description": "Aplicación web para gestión de pedidos entre cocina y jefe de compras",
-  "homepage": "https://tuusuario.github.io/pedidoscocina",
+  "homepage": "https://tiojav.github.io/pedidoscocina",
   "private": true,
   "dependencies": {
     "@types/node": "^20.0.0",
@@ -10,6 +10,7 @@
     "@types/react-dom": "^18.0.0",
     "@types/uuid": "^9.0.0",
     "autoprefixer": "^10.4.0",
+    "firebase": "^12.0.0",
     "lucide-react": "^0.263.0",
     "postcss": "^8.4.0",
     "react": "^18.2.0",

@@ -4,16 +4,22 @@ export interface Articulo {
   formato: string;
   familia: string;
   proveedor: string;
+  descripcion?: string;
+  precio?: number;
 }
 
 export interface Familia {
   id: string;
   nombre: string;
+  descripcion?: string;
 }
 
 export interface Proveedor {
   id: string;
   nombre: string;
+  contacto?: string;
+  telefono?: string;
+  email?: string;
 }
 
 export interface Formato {
@@ -26,17 +32,18 @@ export interface Pedido {
   fecha: Date;
   fechaEnvio?: Date;
   articulos: PedidoArticulo[];
-  estado: 'pendiente' | 'enviado' | 'recibido';
+  estado: 'pendiente' | 'enviado' | 'recibido' | 'en_proceso' | 'completado' | 'cancelado';
   proveedor: string;
+  notas?: string;
+  creadoPor: string;
 }
 
 export interface PedidoArticulo {
-  articuloId: string;
-  cantidad: number;
+  id: string;
   nombre: string;
+  cantidad: number;
   formato: string;
-  familia: string;
-  proveedor: string;
+  precio?: number;
 }
 
 export type UserRole = 'cocinero' | 'jefe_compras'; 

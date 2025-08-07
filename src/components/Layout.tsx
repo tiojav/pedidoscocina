@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, ChefHat, ShoppingCart, Package, Users, FileText, ClipboardList } from 'lucide-react';
+import { LogOut, ChefHat, ShoppingCart, Package, Users, FileText, ClipboardList, Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 interface LayoutProps {
@@ -10,6 +10,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { userRole, logout } = useAuth();
   const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const navigationItems = [
     {
@@ -55,6 +56,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
+              <button
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="mr-4 p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
+              >
+                {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
               <h1 className="text-xl font-semibold text-gray-900">
                 Pedidos Cocina
               </h1>
@@ -75,7 +82,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
       <div className="flex">
         {/* Sidebar */}
-        <nav className="w-64 bg-white shadow-sm min-h-screen">
+        <nav className={`${sidebarOpen ? 'w-64' : 'w-16'} bg-white shadow-sm min-h-screen transition-all duration-300 ease-in-out`}>
           <div className="p-4">
             <nav className="space-y-1">
               {filteredNavigation.map((item) => {
@@ -91,9 +98,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         ? 'bg-blue-100 text-blue-700'
                         : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
                     }`}
+                    title={!sidebarOpen ? item.name : undefined}
                   >
-                    <Icon className="w-5 h-5 mr-3" />
-                    {item.name}
+                    <Icon className="w-5 h-5 mr-3 flex-shrink-0" />
+                    {sidebarOpen && <span>{item.name}</span>}
                   </Link>
                 );
               })}
