@@ -43,7 +43,8 @@ const Pedidos: React.FC = () => {
         cantidad: cantidad,
         nombre: articulo.nombre,
         formato: articulo.formato,
-        precio: articulo.precio
+        precio: articulo.precio,
+        proveedor: articulo.proveedor
       }]);
     }
   };
@@ -352,7 +353,7 @@ const Pedidos: React.FC = () => {
                     <div className="flex-1">
                       <div className="font-medium">{item.nombre}</div>
                       <div className="text-sm text-gray-600">
-                        {getFormatoName(item.formato)} - {getProveedorName(item.proveedor)}
+                        {getFormatoName(item.formato)} - {getProveedorName(item.proveedor || '')}
                       </div>
                     </div>
                                          <div className="flex items-center space-x-2">
@@ -560,7 +561,7 @@ const Pedidos: React.FC = () => {
                       <div>
                         <div className="font-medium">{item.nombre}</div>
                         <div className="text-sm text-gray-600">
-                          {getFormatoName(item.formato)} - {getProveedorName(item.proveedor)}
+                          {getFormatoName(item.formato)} - {getProveedorName(item.proveedor || '')}
                         </div>
                       </div>
                       <div className="text-right">

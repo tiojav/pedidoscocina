@@ -44,6 +44,7 @@ export interface PedidoArticulo {
   cantidad: number;
   formato: string;
   precio?: number;
+  proveedor?: string;
 }
 
 export type UserRole = 'cocinero' | 'jefe_compras'; 
