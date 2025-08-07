@@ -155,12 +155,21 @@ export const articulosService = {
   async obtenerArticulos(): Promise<Articulo[]> {
     const q = query(collection(db, 'articulos'), orderBy('nombre'));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt: doc.data().createdAt?.toDate(),
-      updatedAt: doc.data().updatedAt?.toDate()
-    })) as Articulo[];
+    return querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        nombre: data.nombre,
+        descripcion: data.descripcion,
+        precio: data.precio,
+        unidad: data.unidad,
+        familia: data.familia,
+        proveedor: data.proveedor,
+        activo: data.activo,
+        createdAt: data.createdAt?.toDate(),
+        updatedAt: data.updatedAt?.toDate()
+      } as Articulo;
+    });
   },
 
   // Obtener artículos activos
@@ -171,12 +180,21 @@ export const articulosService = {
       orderBy('nombre')
     );
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt: doc.data().createdAt?.toDate(),
-      updatedAt: doc.data().updatedAt?.toDate()
-    })) as Articulo[];
+    return querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        nombre: data.nombre,
+        descripcion: data.descripcion,
+        precio: data.precio,
+        unidad: data.unidad,
+        familia: data.familia,
+        proveedor: data.proveedor,
+        activo: data.activo,
+        createdAt: data.createdAt?.toDate(),
+        updatedAt: data.updatedAt?.toDate()
+      } as Articulo;
+    });
   },
 
   // Actualizar artículo
@@ -209,12 +227,17 @@ export const familiasService = {
   async obtenerFamilias(): Promise<Familia[]> {
     const q = query(collection(db, 'familias'), orderBy('nombre'));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt: doc.data().createdAt?.toDate(),
-      updatedAt: doc.data().updatedAt?.toDate()
-    })) as Familia[];
+    return querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        nombre: data.nombre,
+        descripcion: data.descripcion,
+        activo: data.activo,
+        createdAt: data.createdAt?.toDate(),
+        updatedAt: data.updatedAt?.toDate()
+      } as Familia;
+    });
   },
 
   async actualizarFamilia(id: string, familia: Partial<Familia>): Promise<void> {
@@ -245,12 +268,19 @@ export const proveedoresService = {
   async obtenerProveedores(): Promise<Proveedor[]> {
     const q = query(collection(db, 'proveedores'), orderBy('nombre'));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt: doc.data().createdAt?.toDate(),
-      updatedAt: doc.data().updatedAt?.toDate()
-    })) as Proveedor[];
+    return querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        nombre: data.nombre,
+        contacto: data.contacto,
+        telefono: data.telefono,
+        email: data.email,
+        activo: data.activo,
+        createdAt: data.createdAt?.toDate(),
+        updatedAt: data.updatedAt?.toDate()
+      } as Proveedor;
+    });
   },
 
   async actualizarProveedor(id: string, proveedor: Partial<Proveedor>): Promise<void> {
