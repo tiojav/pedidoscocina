@@ -19,7 +19,8 @@ export interface Pedido {
   id?: string;
   fecha: Date;
   articulos: ArticuloPedido[];
-  estado: 'pendiente' | 'en_proceso' | 'completado' | 'cancelado';
+  estado: 'pendiente' | 'enviado' | 'recibido' | 'en_proceso' | 'completado' | 'cancelado';
+  proveedor: string;
   notas?: string;
   creadoPor: string;
   createdAt?: Date;

@@ -27,30 +27,29 @@ const Pedidos: React.FC = () => {
   }, {} as Record<string, Articulo[]>);
 
   const handleAddArticulo = (articulo: Articulo, cantidad: number = 1) => {
-    const existingItem = pedidoActual.find(item => item.articuloId === articulo.id);
+    const existingItem = pedidoActual.find(item => item.id === articulo.id);
     
     if (existingItem) {
       setPedidoActual(prev => 
         prev.map(item => 
-          item.articuloId === articulo.id 
+          item.id === articulo.id 
             ? { ...item, cantidad: item.cantidad + cantidad }
             : item
         )
       );
     } else {
       setPedidoActual(prev => [...prev, {
-        articuloId: articulo.id,
+        id: articulo.id,
         cantidad: cantidad,
         nombre: articulo.nombre,
         formato: articulo.formato,
-        familia: articulo.familia,
-        proveedor: articulo.proveedor
+        precio: articulo.precio
       }]);
     }
   };
 
   const handleRemoveArticulo = (articuloId: string) => {
-    setPedidoActual(prev => prev.filter(item => item.articuloId !== articuloId));
+    setPedidoActual(prev => prev.filter(item => item.id !== articuloId));
   };
 
   const handleUpdateCantidad = (articuloId: string, cantidad: number) => {
@@ -61,7 +60,7 @@ const Pedidos: React.FC = () => {
     
     setPedidoActual(prev => 
       prev.map(item => 
-        item.articuloId === articuloId 
+        item.id === articuloId 
           ? { ...item, cantidad }
           : item
       )
@@ -85,7 +84,7 @@ const Pedidos: React.FC = () => {
   };
 
   const handleDecrementArticulo = (articulo: Articulo) => {
-    const existingItem = pedidoActual.find(item => item.articuloId === articulo.id);
+    const existingItem = pedidoActual.find(item => item.id === articulo.id);
     if (existingItem) {
       const newCantidad = existingItem.cantidad - 1;
       if (newCantidad <= 0) {
@@ -99,27 +98,42 @@ const Pedidos: React.FC = () => {
   const handleCrearPedido = () => {
     if (pedidoActual.length === 0) return;
 
+    console.log('🛒 Iniciando creación de pedido...');
+    console.log('📋 Pedido actual:', pedidoActual);
+    console.log('👤 Usuario actual:', userRole);
+
     // Agrupar por proveedor
     const pedidosPorProveedor = pedidoActual.reduce((acc, item) => {
-      if (!acc[item.proveedor]) {
-        acc[item.proveedor] = [];
+      // Obtener el artículo original para obtener el proveedor
+      const articuloOriginal = articulos.find(art => art.id === item.id);
+      const proveedor = articuloOriginal?.proveedor || '';
+      
+      if (!acc[proveedor]) {
+        acc[proveedor] = [];
       }
-      acc[item.proveedor].push(item);
+      acc[proveedor].push(item);
       return acc;
     }, {} as Record<string, PedidoArticulo[]>);
 
+    console.log('📦 Pedidos agrupados por proveedor:', pedidosPorProveedor);
+
     // Crear un pedido por cada proveedor
     Object.entries(pedidosPorProveedor).forEach(([proveedor, articulos]) => {
-      addPedido({
+      const nuevoPedido = {
         fecha: new Date(),
         articulos,
-        estado: 'pendiente',
-        proveedor
-      });
+        estado: 'pendiente' as const,
+        proveedor,
+        creadoPor: userRole || 'cocinero'
+      };
+      
+      console.log('➕ Creando pedido para proveedor:', proveedor, nuevoPedido);
+      addPedido(nuevoPedido);
     });
 
     setPedidoActual([]);
     setShowNuevoPedido(false);
+    console.log('✅ Pedidos enviados para creación');
   };
 
   const getProveedorName = (proveedorId: string) => {
@@ -272,7 +286,7 @@ const Pedidos: React.FC = () => {
                           <p className="text-gray-500 text-sm">No hay artículos en esta familia</p>
                         ) : (
                           articulosFamilia.map(articulo => {
-                            const existingItem = pedidoActual.find(item => item.articuloId === articulo.id);
+                            const existingItem = pedidoActual.find(item => item.id === articulo.id);
                             const cantidad = existingItem?.cantidad || 0;
                             
                             return (
@@ -334,7 +348,7 @@ const Pedidos: React.FC = () => {
               <h3 className="text-lg font-semibold mb-4">Pedido Actual</h3>
               <div className="space-y-3">
                 {pedidoActual.map(item => (
-                  <div key={item.articuloId} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div key={item.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div className="flex-1">
                       <div className="font-medium">{item.nombre}</div>
                       <div className="text-sm text-gray-600">
@@ -343,7 +357,7 @@ const Pedidos: React.FC = () => {
                     </div>
                                          <div className="flex items-center space-x-2">
                        <button
-                         onClick={() => handleDecrementArticulo({ id: item.articuloId, nombre: item.nombre, formato: item.formato, familia: item.familia, proveedor: item.proveedor } as Articulo)}
+                         onClick={() => handleDecrementArticulo({ id: item.id, nombre: item.nombre, formato: item.formato, familia: '', proveedor: '' } as Articulo)}
                          className="p-1 rounded-full bg-red-100 text-red-600 hover:bg-red-200 transition-colors"
                        >
                          <Minus className="w-4 h-4" />
@@ -357,23 +371,23 @@ const Pedidos: React.FC = () => {
                          onChange={(e) => {
                            const newCantidad = parseFloat(e.target.value) || 0;
                            if (newCantidad === 0) {
-                             handleRemoveArticulo(item.articuloId);
+                             handleRemoveArticulo(item.id);
                            } else {
-                             handleUpdateCantidad(item.articuloId, newCantidad);
+                             handleUpdateCantidad(item.id, newCantidad);
                            }
                          }}
                          className="w-20 px-2 py-1 border border-gray-300 rounded text-center text-sm"
                        />
                        
                        <button
-                         onClick={() => handleIncrementArticulo({ id: item.articuloId, nombre: item.nombre, formato: item.formato, familia: item.familia, proveedor: item.proveedor } as Articulo)}
+                         onClick={() => handleIncrementArticulo({ id: item.id, nombre: item.nombre, formato: item.formato, familia: '', proveedor: '' } as Articulo)}
                          className="p-1 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition-colors"
                        >
                          <Plus className="w-4 h-4" />
                        </button>
                        
                        <button
-                         onClick={() => handleRemoveArticulo(item.articuloId)}
+                         onClick={() => handleRemoveArticulo(item.id)}
                          className="text-red-600 hover:text-red-800 ml-2"
                          title="Eliminar del pedido"
                        >

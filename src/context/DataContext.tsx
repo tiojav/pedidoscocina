@@ -154,8 +154,9 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       precio: art.precio
     })),
     estado: pedidoDB.estado,
+    proveedor: pedidoDB.proveedor || '',
     notas: pedidoDB.notas,
-    creadoPor: pedidoDB.creadoPor
+    creadoPor: pedidoDB.creadoPor || 'cocinero'
   });
 
   // Funciones CRUD
@@ -234,6 +235,8 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
 
   const addPedido = async (pedido: Omit<Pedido, 'id'>) => {
     try {
+      console.log('🛒 Creando pedido:', pedido);
+      
       const pedidoDB: Omit<PedidoDB, 'id'> = {
         fecha: pedido.fecha,
         articulos: pedido.articulos.map(art => ({
@@ -244,14 +247,18 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
           precio: art.precio
         })),
         estado: pedido.estado,
+        proveedor: pedido.proveedor,
         notas: pedido.notas,
         creadoPor: pedido.creadoPor
       };
 
-      await pedidosService.crearPedido(pedidoDB);
+      console.log('📦 Pedido a guardar en DB:', pedidoDB);
+      const id = await pedidosService.crearPedido(pedidoDB);
+      console.log('✅ Pedido creado con ID:', id);
     } catch (err) {
-      setError('Error al crear el pedido');
-      console.error('Error creando pedido:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Error desconocido';
+      setError(`Error al crear el pedido: ${errorMessage}`);
+      console.error('❌ Error creando pedido:', err);
     }
   };
 
