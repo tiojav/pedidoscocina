@@ -63,6 +63,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       try {
         setLoading(true);
         setError(null);
+        console.log('🔄 Iniciando carga de datos...');
 
         // Cargar datos en paralelo
         const [articulosData, familiasData, proveedoresData, pedidosData] = await Promise.all([
@@ -71,6 +72,13 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
           proveedoresService.obtenerProveedores(),
           pedidosService.obtenerPedidos()
         ]);
+
+        console.log('📊 Datos cargados:', {
+          articulos: articulosData.length,
+          familias: familiasData.length,
+          proveedores: proveedoresData.length,
+          pedidos: pedidosData.length
+        });
 
         // Convertir datos de Firebase a tipos locales
         setArticulos(articulosData.map(convertirArticuloDB));
@@ -87,9 +95,12 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
           { id: '5', nombre: 'Docena' }
         ]);
 
+        console.log('✅ Datos cargados exitosamente');
+
       } catch (err) {
-        setError('Error al cargar los datos');
-        console.error('Error cargando datos:', err);
+        const errorMessage = err instanceof Error ? err.message : 'Error desconocido';
+        setError(`Error al cargar los datos: ${errorMessage}`);
+        console.error('❌ Error cargando datos:', err);
       } finally {
         setLoading(false);
       }
@@ -150,6 +161,8 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   // Funciones CRUD
   const addArticulo = async (articulo: Omit<Articulo, 'id'>) => {
     try {
+      console.log('➕ Creando artículo:', articulo);
+      
       const articuloDB: Omit<ArticuloDB, 'id'> = {
         nombre: articulo.nombre,
         descripcion: articulo.descripcion,
@@ -160,14 +173,18 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
         activo: true
       };
 
-      await articulosService.crearArticulo(articuloDB);
+      const id = await articulosService.crearArticulo(articuloDB);
+      console.log('✅ Artículo creado con ID:', id);
       
       // Recargar artículos
       const articulosData = await articulosService.obtenerArticulos();
       setArticulos(articulosData.map(convertirArticuloDB));
+      
+      console.log('📊 Artículos actualizados:', articulosData.length);
     } catch (err) {
-      setError('Error al crear el artículo');
-      console.error('Error creando artículo:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Error desconocido';
+      setError(`Error al crear el artículo: ${errorMessage}`);
+      console.error('❌ Error creando artículo:', err);
     }
   };
 

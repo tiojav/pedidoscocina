@@ -1,0 +1,25 @@
+[debug] [2025-08-07T00:18:34.840Z] ----------------------------------------------------------------------
+[debug] [2025-08-07T00:18:34.845Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\diver\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-08-07T00:18:34.846Z] CLI Version:   14.11.2
+[debug] [2025-08-07T00:18:34.846Z] Platform:      win32
+[debug] [2025-08-07T00:18:34.846Z] Node Version:  v22.18.0
+[debug] [2025-08-07T00:18:34.847Z] Time:          Thu Aug 07 2025 02:18:34 GMT+0200 (hora de verano de Europa central)
+[debug] [2025-08-07T00:18:34.847Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-08-07T00:18:35.309Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-08-07T00:18:35.310Z] > authorizing via signed-in user (albaranvaradero@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\diver\AndroidStudioProjects\Pedidoscocina
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
